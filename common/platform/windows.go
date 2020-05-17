@@ -2,7 +2,9 @@
 
 package platform
 
-import "path/filepath"
+import (
+	"path/filepath"
+)
 
 func ExpandEnv(s string) string {
 	// TODO

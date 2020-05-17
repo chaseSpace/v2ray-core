@@ -1,0 +1,137 @@
+{
+  "log": {
+    "loglevel": "warning"
+  },
+  "inbounds": [
+    {
+      "port": 667,
+      "protocol": "vmess",
+      "listen": "127.0.0.1",
+      "streamSettings": {
+        "network": "ws"
+      },
+      "settings": {
+        "clients": [
+          {
+            "id": "d17a1af7-efa5-42ca-b7e9-6a35282d737f",
+            "alterId": 64
+          },
+          {
+            "id": "d17a1af7-efa5-42ca-b7e9-6a35282d737d",
+            "alterId": 64
+          }
+        ],
+        "detour": {
+          "to": "dynamicPort"
+        }
+      }
+    },
+    {
+      "protocol": "vmess",
+      "port": "10000-65530",
+      "tag": "dynamicPort",
+      "settings": {
+        "default": {
+          "alterId": 64
+        }
+      },
+      "allocate": {
+        "strategy": "random",
+        "concurrency": 2,
+        "refresh": 3
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "settings": {},
+      "tag": "direct"
+    },
+    {
+      "protocol": "blackhole",
+      "settings": {},
+      "tag": "blocked"
+    }
+  ],
+  "_comm": "\"transport\": {}, 全局的传输协议配置在这",
+  "_comm": "Routing controls how traffic from inbounds are sent to outbounds.",
+  "routing": {
+    "domainStrategy": "IPOnDemand",
+    "rules": [
+      {
+        "_comm": "Blocks access to private IPs. Remove this if you want to access your router.",
+        "type": "field",
+        "ip": [
+          "geoip:private"
+        ],
+        "outboundTag": "blocked"
+      },
+      {
+        "_comm": "Blocks major ads.",
+        "type": "field",
+        "domain": [
+          "geosite:category-ads"
+        ],
+        "outboundTag": "blocked"
+      },
+      {
+        "_comm": "禁止内网访问",
+        "ip": [
+          "geoip:private"
+        ],
+        "outboundTag": "blocked",
+        "type": "field"
+      },
+      {
+        "_comm": "禁止bt",
+        "outboundTag": "blocked",
+        "protocol": [
+          "bittorrent"
+        ],
+        "type": "field"
+      }
+    ]
+  },
+  "_comm": "Dns settings for domain resolution.",
+  "dns": {
+    "_comm": " Static hosts, similar to hosts file.",
+    "hosts": {
+      "_comm": "Match v2ray.com to another domain on CloudFlare. This domain will be used when querying IPs for v2ray.com.",
+      "domain:v2ray.com": "www.vicemc.net",
+      "_comm": "The following settings help to eliminate DNS poisoning in mainland China.\n      // It is safe to comment these out if this is not the case for you.",
+      "domain:github.io": "pages.github.com",
+      "domain:wikipedia.org": "www.wikimedia.org",
+      "domain:shadowsocks.org": "electronicsrealm.com"
+    },
+    "servers": [
+      "1.1.1.1",
+      {
+        "address": "114.114.114.114",
+        "port": 53,
+        "_comm": " List of domains that use this DNS first.",
+        "domains": [
+          "geosite:cn"
+        ]
+      },
+      "8.8.8.8",
+      "localhost"
+    ]
+  },
+  "_comm": " Policy controls some internal behavior of how V2Ray handles connections.\n  // It may be on connection level by user levels in 'levels', or global settings in 'system.'",
+  "policy": {
+    "_comm": "Connection policys by user levels",
+    "levels": {
+      "0": {
+        "uplinkOnly": 0,
+        "downlinkOnly": 0
+      }
+    },
+    "system": {
+      "statsInboundUplink": false,
+      "statsInboundDownlink": false
+    }
+  },
+  "_comm": "Stats enables internal stats counter.\n  // This setting can be used together with Policy and Api. \n  //\"stats\":{},",
+  "other": {}
+}

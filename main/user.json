@@ -1,0 +1,33 @@
+{
+  "_comm": "Port to listen on. You may need root access if the value is less than 1024.",
+  "port": 667,
+  "_comm": "IP address to listen on. Change to \"0.0.0.0\" to listen on all network interfaces.",
+  "listen": "127.0.0.1",
+  "_comm": "Tag of the inbound proxy. May be used for routing.",
+  "tag": "vmess-inbound",
+  "_comm": " Protocol name of inbound proxy.",
+  "protocol": "vmess",
+  "_comm": "Settings of the protocol. Varies based on protocol.",
+  "settings": {
+    "_comm": "增加账户",
+    "clients": [
+      {
+        "id": "随机生成",
+        "level": 1,
+        "alterId": 64
+      }
+    ]
+  },
+  "streamSettings": {
+    "network": "ws"
+  },
+  "_comm": " Enable sniffing on TCP connection.",
+  "sniffing": {
+    "enabled": true,
+    "_comm": "Target domain will be overriden to the one carried by the connection, if the connection is HTTP or HTTPS.",
+    "destOverride": [
+      "http",
+      "tls"
+    ]
+  }
+}

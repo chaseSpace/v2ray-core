@@ -1,0 +1,23 @@
+### 关于协议更换
+
+mkcp
+```
+"streamSettings": {
+        "network": "mkcp", # 此处的 mkcp 也可写成 kcp，两种写法是起同样的效果
+        "kcpSettings": {
+          "uplinkCapacity": 5,
+          "downlinkCapacity": 100,
+          "congestion": true,
+          "header": {
+            "type": "none"        
+            }
+       }
+    }
+```
+ws
+```
+"streamSettings": {
+        "network":"ws"
+      }
+```
+
