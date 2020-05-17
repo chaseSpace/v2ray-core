@@ -8,7 +8,18 @@
       "protocol": "vmess",
       "listen": "127.0.0.1",
       "streamSettings": {
-        "network": "ws"
+        "_comm": "如果ws+tls要nginx",
+        "network": "tcp",
+        "_comm": "security 要设置为 tls 才会启用 TLS",
+        "security": "tls",
+        "tlsSettings": {
+          "certificates": [
+            {
+              "certificateFile": "/etc/v2ray/fullchain.pem",
+              "keyFile": "/etc/v2ray/privkey.pem"
+            }
+          ]
+        }
       },
       "settings": {
         "clients": [
