@@ -1,0 +1,104 @@
+{
+  "log": {
+    "access": "/var/log/v2ray/access.log",
+    "error": "/var/log/v2ray/error.log",
+    "loglevel": "warning"
+  },
+  "dns": {
+    "hosts": {},
+    "servers": [
+      "localhost"
+    ]
+  },
+  "inbound": {
+    "port": 667,
+    "protocol": "vmess",
+    "settings": {
+      "clients": [
+        {
+          "id": "d17a1af7-efa5-42ca-b7e9-6a35282d737f",
+          "level": 1,
+          "alterId": 64
+        }
+      ],
+      "detour": {
+        "to": "detour"
+      }
+    },
+    "streamSettings": {
+      "network": "tcp"
+    }
+  },
+  "outbound": {
+    "protocol": "freedom",
+    "settings": {},
+    "tag": "direct"
+  },
+  "inboundDetour": [
+    {
+      "protocol": "vmess",
+      "port": "20000-30000",
+      "tag": "detour",
+      "settings": {
+        "default": {
+          "level": 1,
+          "alterId": 64
+        }
+      },
+      "allocate": {
+        "strategy": "random",
+        "concurrency": 2,
+        "refresh": 5
+      },
+      "streamSettings": {
+        "network": "tcp"
+      }
+    }
+  ],
+  "outboundDetour": [
+    {
+      "protocol": "blackhole",
+      "settings": {},
+      "tag": "blocked"
+    }
+  ],
+  "routing": {
+    "strategy": "rules",
+    "settings": {
+    "rules": [
+      {
+        "_comm": "Blocks access to private IPs. Remove this if you want to access your router.",
+        "type": "field",
+        "ip": [
+          "geoip:private"
+        ],
+        "outboundTag": "blocked"
+      },
+      {
+        "_comm": "Blocks major ads.",
+        "type": "field",
+        "domain": [
+          "geosite:category-ads"
+        ],
+        "outboundTag": "blocked"
+      },
+      {
+        "_comm": "禁止内网访问",
+        "ip": [
+          "geoip:private"
+        ],
+        "outboundTag": "blocked",
+        "type": "field"
+      },
+      {
+        "_comm": "禁止bt",
+        "outboundTag": "blocked",
+        "protocol": [
+          "bittorrent"
+        ],
+        "type": "field"
+      }
+    ]
+    }
+  }
+}

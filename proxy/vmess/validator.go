@@ -133,6 +133,7 @@ func (v *TimedUserValidator) Get(userHash []byte) (*protocol.MemoryUser, protoco
 
 	var fixedSizeHash [16]byte
 	copy(fixedSizeHash[:], userHash)
+
 	pair, found := v.userHash[fixedSizeHash]
 	if found {
 		var user protocol.MemoryUser

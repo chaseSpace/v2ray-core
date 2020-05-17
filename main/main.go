@@ -29,7 +29,7 @@ var (
 	format      = flag.String("format", "json", "Format of input file.")
 
 	/*  We have to do this here because Golang's Test will also need to parse flag, before
-		main func in this file is run.
+	main func in this file is run.
 	*/
 	_ = func() error {
 
@@ -117,6 +117,8 @@ func startV2Ray() (core.Server, error) {
 	if err != nil {
 		return nil, newError("failed to read config files: [", configFiles.String(), "]").Base(err)
 	}
+
+	//log.Printf("%+v", config)
 
 	server, err := core.New(config)
 	if err != nil {
