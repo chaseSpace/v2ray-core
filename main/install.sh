@@ -12,6 +12,8 @@ if [[ -z "$GOPATH" ]]; then
 fi
 
 PJ_NAME="v2ray-core"
+PROJECT_URL="https://github.com/chaseSpace/$PJ_NAME.git"
+
 pj_dir=$HOME/${PJ_NAME}
 
 dir_etc_v2='/etc/v2ray'
@@ -33,23 +35,24 @@ __copy_config(){
 
 __compile_and_overwrite_old(){
     git pull origin
+    now=$(pwd)
+
     cd ${pj_dir}/main && go build -o $GOPATH/bin/v2ray
     cd ${pj_dir}/infra/control/main &&  go build -o $GOPATH/bin/v2ctl
 
-    cd ${INSTALL_DIR}
+    cd ${now}
 
     /bin/cp -rf $GOPATH/bin/v2ray $dir_usrbin_v2/
     /bin/cp -rf $GOPATH/bin/v2ctl $dir_usrbin_v2/
     /bin/cp -rf ${pj_dir}/release/config/*.* $dir_usrbin_v2/
 
-    /bin/cp -rf ${pj_dir}/release/config/systemd/v2ray.service /etc/systemd/system
+    /bin/cp -rf ${pj_dir}/release/config/systemd/v2ray.service /etc/systemd/system/
 }
 
 install (){
     mkdir -p $dir_etc_v2 $dir_log_v2 $dir_usrbin_v2
 
     if [[ ! -e ${PJ_NAME} ]];then
-        PROJECT_URL="https://github.com/chaseSpace/$PJ_NAME.git"
         git clone ${PROJECT_URL}
     fi
 
@@ -61,7 +64,7 @@ install (){
     export V2RAY_LOCATION_TOOL=$dir_usrbin_v2
     export V2RAY_LOCATION_ASSET=$dir_usrbin_v2
 
-    systemctl restart v2ray.service
+    systemctl restart v2ray
 }
 
 
@@ -73,7 +76,7 @@ update(){
     # it will cancel if file exists(not force)
     __copy_config
 
-    systemctl restart v2ray.service
+    systemctl restart v2ray
 }
 
 main(){
