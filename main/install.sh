@@ -76,6 +76,8 @@ update(){
     # it will cancel if file exists(not force)
     __copy_config
 
+    # v2ray.service changed, so...
+    systemctl daemon-reload
     systemctl restart v2ray
 }
 
